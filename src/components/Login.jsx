@@ -14,7 +14,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault();
+    setError("");
 
     try {
       const response = await axios.post(

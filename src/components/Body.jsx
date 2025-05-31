@@ -30,10 +30,9 @@ const Body = () => {
 
   useEffect(() => {
     if (!userData || !userData._id) {
-      // If user data is not available, fetch it
       fetchUser();
     }
-  }, []);
+  }, [userData]);
 
   return (
     <>
