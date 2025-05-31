@@ -2,11 +2,25 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "../utils/constants";
-import { addRequests } from "../utils/requestSlice";
+import { addRequests, removeRequest } from "../utils/requestSlice";
 
 const Requests = () => {
   const dispatch = useDispatch();
   const requests = useSelector((store) => store.requests);
+
+  const reviewRequest = async (status, _id) => {
+    try {
+      const res = await axios.post(
+        BASE_URL + "/request/review/" + status + "/" + _id,
+        {},
+        { withCredentials: true }
+      );
+
+      dispatch(removeRequest(_id));
+    } catch (error) {
+      console.error("Error reviewing request:", error);
+    }
+  };
 
   const fetchRequests = async () => {
     try {
@@ -65,8 +79,18 @@ const Requests = () => {
             )}
             <p>{about}</p>
             <div className="flex items-center gap-2">
-              <button className="btn btn-primary">Reject</button>
-              <button className="btn btn-secondary">Accept</button>
+              <button
+                className="btn btn-primary"
+                onClick={() => reviewRequest("rejected", requests._id)}
+              >
+                Reject
+              </button>
+              <button
+                className="btn btn-secondary"
+                onClick={() => reviewRequest("accepted", requests._id)}
+              >
+                Accept
+              </button>
             </div>
           </div>
         );
