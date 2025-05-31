@@ -35,7 +35,7 @@ const EditProfile = ({ user }) => {
         }
       );
 
-      dispatch(addUser(res?.data?.data));
+      dispatch(addUser(res?.data?.user));
       setShowToast(true);
       setTimeout(() => {
         setShowToast(false);
@@ -50,9 +50,9 @@ const EditProfile = ({ user }) => {
   return (
     <>
       {showToast && (
-        <div className="toast">
-          <div className="alert alert-info">
-            <span>Profile saved successfully.</span>
+        <div className="toast toast-top toast-center">
+          <div className="alert alert-success">
+            <span>Profile edited successfully.</span>
           </div>
         </div>
       )}
