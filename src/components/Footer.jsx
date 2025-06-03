@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -19,6 +20,12 @@ const Footer = () => {
           <p>Copyright © {new Date().getFullYear()} - All right reserved</p>
         </aside>
         <nav className="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
+          <Link to={"/privacy"} className="cursor-pointer underline">
+            Privacy
+          </Link>
+          <Link to={"/terms"} className="cursor-pointer underline">
+            Terms & conditions
+          </Link>
           <a>
             <svg
               xmlns="http://www.w3.org/2000/svg"
