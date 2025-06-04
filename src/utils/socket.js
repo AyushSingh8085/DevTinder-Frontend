@@ -5,6 +5,6 @@ export const createSocketConnection = () => {
   if (location.hostname === "localhost") {
     return io(BASE_URL);
   } else {
-    io("/", { path: "/api/socket.io", withCredentials: true });
+    io("/", { path: "/api/socket.io" });
   }
 };

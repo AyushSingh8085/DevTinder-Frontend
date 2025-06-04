@@ -11,8 +11,6 @@ const Chat = () => {
 
   const { targetUserId } = useParams();
 
-  const socket = createSocketConnection();
-
   const user = useSelector((store) => store.user);
 
   const userId = user?._id;
@@ -42,7 +40,7 @@ const Chat = () => {
   };
 
   const sendMessage = () => {
-    if (!user || !userId || !socket) return;
+    const socket = createSocketConnection();
 
     socket.emit("sendMessage", {
       firstName: user?.firstName,
@@ -55,7 +53,9 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    if (!userId || !socket) return;
+    if (!userId) return;
+
+    const socket = createSocketConnection();
 
     socket.emit("joinChat", {
       firstName: user.firstName,
@@ -74,7 +74,7 @@ const Chat = () => {
     return () => {
       socket.disconnect();
     };
-  }, [socket, userId, targetUserId]);
+  }, [userId, targetUserId]);
 
   useEffect(() => {
     fetchChatMessages();
