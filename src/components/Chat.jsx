@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { createSocketConnection } from "../utils/socket";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import { BASE_URL } from "../utils/constants";
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -14,6 +16,30 @@ const Chat = () => {
   const user = useSelector((store) => store.user);
 
   const userId = user?._id;
+
+  const fetchChatMessages = async () => {
+    try {
+      const chat = await axios.get(BASE_URL + "/chat/" + targetUserId, {
+        withCredentials: true,
+      });
+
+      const chatMessages = chat?.data?.messages.map((msg) => {
+        const { senderId, text, createdAt } = msg;
+
+        return {
+          firstName: senderId?.firstName,
+          lastName: senderId?.lastName,
+          text,
+          createdAt,
+          _id: senderId?._id,
+        };
+      });
+
+      setMessages(chatMessages);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const sendMessage = () => {
     socket.emit("sendMessage", {
@@ -31,18 +57,26 @@ const Chat = () => {
 
     socket.emit("joinChat", {
       firstName: user.firstName,
+      lastName: user.lastName,
       userId,
       targetUserId,
     });
 
     socket.on("messageReceived", ({ firstName, text, _id }) => {
-      setMessages((prev) => [...prev, { firstName, text, _id }]);
+      setMessages((prev) => [
+        ...prev,
+        { firstName, lastName, text, _id, createdAt: new Date() },
+      ]);
     });
 
     return () => {
       socket.disconnect();
     };
-  }, [userId, targetUserId]);
+  }, [socket, userId, targetUserId]);
+
+  useEffect(() => {
+    fetchChatMessages();
+  }, []);
 
   return (
     <div>
@@ -53,10 +87,19 @@ const Chat = () => {
           {messages.length > 0 &&
             messages?.map((msg, index) => {
               return (
-                <div key={index} className="chat chat-start">
+                <div
+                  key={index}
+                  className={`chat ${
+                    userId === msg._id ? "chat-end" : "chat-start"
+                  }`}
+                >
                   <div className="chat-header">
-                    {userId === msg._id ? "You" : msg.firstName}
-                    <time className="text-xs opacity-50">2 hours ago</time>
+                    {userId === msg._id
+                      ? "You"
+                      : `${msg.firstName} ${msg.lastName}`}
+                    <time className="text-xs opacity-50">
+                      {new Date(msg.createdAt).toDateString()}
+                    </time>
                   </div>
                   <div className="chat-bubble">{msg.text}</div>
                 </div>
