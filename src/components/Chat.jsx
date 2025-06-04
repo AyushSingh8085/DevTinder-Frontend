@@ -62,7 +62,7 @@ const Chat = () => {
       targetUserId,
     });
 
-    socket.on("messageReceived", ({ firstName, text, _id }) => {
+    socket.on("messageReceived", ({ firstName, lastName, text, _id }) => {
       setMessages((prev) => [
         ...prev,
         { firstName, lastName, text, _id, createdAt: new Date() },
