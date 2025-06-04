@@ -53,7 +53,7 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    if (!userId) return;
+    if (!userId || !socket) return;
 
     socket.emit("joinChat", {
       firstName: user.firstName,
