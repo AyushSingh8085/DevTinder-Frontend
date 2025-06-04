@@ -46,6 +46,7 @@ const Chat = () => {
 
     socket.emit("sendMessage", {
       firstName: user?.firstName,
+      lastName: user?.lastName,
       userId,
       targetUserId,
       text: newMessage,
@@ -64,12 +65,15 @@ const Chat = () => {
       targetUserId,
     });
 
-    socket.on("messageReceived", ({ firstName, lastName, text, _id }) => {
-      setMessages((prev) => [
-        ...prev,
-        { firstName, lastName, text, _id, createdAt: new Date() },
-      ]);
-    });
+    socket.on(
+      "messageReceived",
+      ({ firstName, lastName, text, _id, timeStamp }) => {
+        setMessages((prev) => [
+          ...prev,
+          { firstName, lastName, text, _id, createdAt: timeStamp },
+        ]);
+      }
+    );
 
     return () => {
       socket.disconnect();
