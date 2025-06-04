@@ -42,6 +42,8 @@ const Chat = () => {
   };
 
   const sendMessage = () => {
+    if (!user || !userId || !socket) return;
+
     socket.emit("sendMessage", {
       firstName: user?.firstName,
       userId,
