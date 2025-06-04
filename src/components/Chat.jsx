@@ -41,7 +41,7 @@ const Chat = () => {
   };
 
   const sendMessage = () => {
-    if (!socketRef.current) return;
+    if (!socketRef.current || !user || !newMessage.trim()) return;
 
     socketRef.current.emit("sendMessage", {
       firstName: user?.firstName,
@@ -54,7 +54,7 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    if (!userId) return;
+    if (!user || !userId || !targetUserId) return;
 
     const socket = createSocketConnection();
     socketRef.current = socket;
@@ -77,11 +77,15 @@ const Chat = () => {
       socket.disconnect();
       socketRef.current = null;
     };
-  }, [userId, targetUserId]);
+  }, [user, userId, targetUserId]);
 
   useEffect(() => {
     fetchChatMessages();
   }, []);
+
+  if (!user || !userId) {
+    return <div className="text-center p-10">Loading chat...</div>;
+  }
 
   return (
     <div>
