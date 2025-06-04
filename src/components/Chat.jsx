@@ -42,7 +42,7 @@ const Chat = () => {
   };
 
   const sendMessage = () => {
-    if (!userId || !socket) return;
+    // if (!userId || !socket) return;
 
     socket.emit("sendMessage", {
       firstName: user?.firstName,
@@ -56,7 +56,7 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    if (!userId || !socket) return;
+    if (!userId) return;
 
     socket.emit("joinChat", {
       firstName: user.firstName,
@@ -78,7 +78,7 @@ const Chat = () => {
     return () => {
       socket.disconnect();
     };
-  }, [socket, userId, targetUserId]);
+  }, [userId, targetUserId]);
 
   useEffect(() => {
     fetchChatMessages();
