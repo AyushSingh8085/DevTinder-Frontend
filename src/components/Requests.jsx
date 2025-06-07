@@ -50,7 +50,7 @@ const Requests = () => {
 
   return (
     <div className="text-center my-10 max-w-6xl mx-auto">
-      <h1 className="text-bold text-4xl text-white p-4">Connection Requests</h1>
+      <h1 className="text-bold text-4xl p-4">Connection Requests</h1>
 
       {requests.map((requests) => {
         const { _id, firstName, lastName, photoUrl, about, age, gender } =

@@ -37,7 +37,7 @@ const Connections = () => {
 
   return (
     <div className="text-center my-10 max-w-6xl mx-auto">
-      <h1 className="text-bold text-4xl text-white p-4">Conections</h1>
+      <h1 className="text-bold text-4xl p-4">Connections</h1>
 
       {connections.map((connection) => {
         const {

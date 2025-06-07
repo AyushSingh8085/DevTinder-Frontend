@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
 import axios from "axios";
 import { removeUser } from "../utils/userSlice";
+import ThemeToggleButton from "./ThemeToggle";
 
 const Navbar = () => {
   const user = useSelector((store) => store.user);
@@ -34,6 +35,7 @@ const Navbar = () => {
         </div>
         {user && (
           <div className="flex gap-2">
+            <ThemeToggleButton />
             <p className="px-4 py-2">Welcome, {user?.firstName}</p>
             <div className="dropdown dropdown-end mx-5 flex">
               <div
